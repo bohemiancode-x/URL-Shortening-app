@@ -11,6 +11,7 @@ navBtn.addEventListener('click', showNav)
 const form = document.querySelector('.shorten-form')
 const input = document.querySelector('.shorten-input')
 const errorMsg = document.querySelector('.errormsg')
+const html = document.querySelector('.resulttab')
 
 form.addEventListener('submit', e => {
     e.preventDefault();
@@ -21,9 +22,13 @@ form.addEventListener('submit', e => {
             input.style.border = "none"
             errorMsg.style.display = "none";
         }
+    
     console.log(input.value.trim());
+    
+    html.innerHTML = "";
     submitForm();
     form.reset();
+   
 })
 
 //clear error when user starts typing
@@ -50,26 +55,42 @@ const getShortenedUrl = async () => {
 const submitForm = () => { getShortenedUrl()
     .then(data => {
         
-        const html = document.querySelector('.shorten-cta')
+        
         let resultdiv = document.createElement("div")
+        
         resultdiv.classList.add("results")
+
         resultdiv.innerHTML = `
                 <div class="card">
                     <p>${data.result.original_link}</p>
                     <span></span>
-                    <p>${data.result.short_link}</p>
-                    <div class="button">Copy</div>
+                    <p class="shortlink">${data.result.short_link}</p>
+                    <div onclick="youcopied()" class="button">Copy</div>
                 </div>
 
                 <div class="card">
                     <p>${data.result.original_link}</p>
                     <span></span>
-                    <p>${data.result.short_link2}</p>
-                <div class="button">Copy</div>
+                    <p class="shortlink">${data.result.short_link2}</p>
+                <div onclick="copyText()" class="button">Copy</div>
             </div>
         `
         console.log(resultdiv);
+        localStorage.setItem('shortlink1', `${data.result.short_link}`)
+        localStorage.setItem('shortlink2', `${data.result.short_link2}`)
         html.appendChild(resultdiv)
     })
     .catch(err => console.log(err))
+}
+
+// function to copy text to clipboard
+
+const copyText = document.querySelector('.shortlink')
+
+
+const youcopied = () => {
+    if(localStorage.getItem('shortlink1')){
+    navigator.clipboard.writeText(localStorage.getItem('shortlink1'));
+    console.log('you copied' + " " + localStorage.getItem('shortlink1'))
+    }
 }
