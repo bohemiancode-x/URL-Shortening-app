@@ -85,12 +85,17 @@ const submitForm = () => { getShortenedUrl()
 
 // function to copy text to clipboard
 
-const copyText = document.querySelector('.shortlink')
+const copyBtn = document.querySelector('.button')
 
 
-const youcopied = () => {
+const youcopied = (e) => {
     if(localStorage.getItem('shortlink1')){
     navigator.clipboard.writeText(localStorage.getItem('shortlink1'));
     console.log('you copied' + " " + localStorage.getItem('shortlink1'))
     }
+    console.log(e);
+    // copyBtn.style.backgroundColor = "purple"
+    // setTimeout(() => {
+    //     copyBtn.style.backgroundColor = "cyan"
+    // }, 3000)
 }
